@@ -1,21 +1,56 @@
-// http://fcc-weather-api.glitch.me
-
-// ajax get command
+// geo location //
+// https://developer.mozilla.org/en-US/docs/Web/API/Navigator/geolocation
 
 var lat, lon;
 var tempUnit = 'C';
 var currentTempInCelsius;
-
 var api = 'https://fcc-weather-api.glitch.me/api/current?' + lat + lon;
-var api = 'https://fcc-weather-api.glitch.me/api/current?lat=35&lon=139'
+// var api = 'https://fcc-weather-api.glitch.me/api/current?lat=35&lon=139'
 
-$.ajax({
-  url: api,
-  method: "GET"
-}).done(function(response) {
-  console.log(response);
-  console.log(response.main.temp);
+$( document ).ready(function(){
+   console.log( "ready!" );
+   /*
+   var getLocation = () => {
+		if (navigator.geolocation) {
+		    navigator.geolocation.getCurrentPosition(showPosition);
+		} else { 
+		    console.log("Geolocation is not supported by this browser.");
+		}
+	}
+	var showPosition = (position) => {
+		var lat = "lat=" + position.coords.latitude;
+	    var lon = "lon=" + position.coords.longitude;
+	    console.log(lat, " ", lon);
+	}
+	getLocation();
+	*/
+	if (navigator.geolocation) {
+	    navigator.geolocation.getCurrentPosition(function (position) {
+	    	var lat = "lat=" + position.coords.latitude;
+	    	var lon = "lon=" + position.coords.longitude;
+	    	console.log(lat, " ", lon);
+	    	getWeather(lat, lon);
+
+	    });
+	} else { 
+	    console.log("Geolocation is not supported by this browser.");
+	}
+
 });
+
+
+// http://fcc-weather-api.glitch.me
+// ajax get command
+
+var getWeather = (lat, lon) => {
+	$.ajax({
+	  url: api,
+	  method: "GET"
+	}).done(function(response) {
+	  console.log(response);
+	  console.log(response.main.temp);
+	});
+}
 
 /*
 { 
@@ -38,3 +73,4 @@ $.ajax({
 	"name":"", 
 	"cod":200 
 }
+*/
